@@ -18,13 +18,13 @@ logger.addHandler(console)
 
 
 
-def create_user_router() -> APIRouter:
+def create_user_router(profile_infos: dict, users_content: dict) -> APIRouter:
     user_router = APIRouter(
                             prefix="/user",
                             tags=["user"],
                             dependencies=[Depends(rate_limit)]
                             )
-    user_service = UserService()
+    user_service = UserService(profile_infos, users_content)
 
     @user_router.get("/all", response_model=MultipleUsersResponse)
     async def get_all_users_paginated(start: int = 0, limit: int = 2):
